@@ -279,6 +279,9 @@ public void Event_InventoryApplicationPost(Event event, const char[] name, bool 
 
     int iActiveWeapon = TF2_GetActiveWeapon(iClient);
 
+    if(iActiveWeapon < 0 || iActiveWeapon > 2048)
+        return;
+
     DataPack hPack = new DataPack();
     hPack.WriteCell(EntIndexToEntRef(iClient));
     hPack.WriteCell(EntIndexToEntRef(iActiveWeapon));
