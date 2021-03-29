@@ -4,6 +4,8 @@ Custom Attribute using Nosoop's [custom attributes framework](https://github.com
 
 Tested it on Nosoop's [Custom Weapon X](https://github.com/nosoop/SM-TFCustomWeaponsX) and it works without any problems.
 
+**HOWEVER,** the model won't shot on non-bot clients. There is a missing property to enable it, but it's your job to find it ( in case you find it and want to put it in the plugin, I wrote a comment where you should put it ). It's not allowed to share it publicly.
+
 This plugin uses Nosoop's [Ninja](https://github.com/nosoop/NinjaBuild-SMPlugin) template. Easy to organize everything and build releases. I'd recommend to check it out.
 
 Please, this is the first version of this plugin. If you find any issues, make sure to open an issue to let me know!
