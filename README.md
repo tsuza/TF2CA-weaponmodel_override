@@ -18,4 +18,4 @@ https://media.discordapp.net/attachments/642780993199013922/826102367756746813/u
 
 https://media.discordapp.net/attachments/642780993199013922/826103949047365642/unknown.png
 
-( I didn't make the Sentry Gun pistol model. Credits to the [https://gamebanana.com/skins/139638"](original creator) for it. Amazing model btw )
+( I didn't make the Sentry Gun pistol model. Credits to the [original creator](https://gamebanana.com/skins/139638) for it. Amazing model btw )
