@@ -11,3 +11,11 @@ This plugin uses Nosoop's [Ninja](https://github.com/nosoop/NinjaBuild-SMPlugin)
 Please, this is the first version of this plugin. If you find any issues, make sure to open an issue to let me know!
 
 Also I've got no clue how to properly format this.
+
+https://media.discordapp.net/attachments/795689948908617760/803952503749607464/20210127122052_1.jpg
+
+https://media.discordapp.net/attachments/642780993199013922/826102367756746813/unknown.png
+
+https://media.discordapp.net/attachments/642780993199013922/826103949047365642/unknown.png
+
+( I didn't make the Sentry Gun pistol model. Credits to the [original creator](https://gamebanana.com/skins/139638) for it. Amazing model btw )
