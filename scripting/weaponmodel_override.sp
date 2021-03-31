@@ -15,7 +15,7 @@
 #define PLUGIN_NAME         "[CA] Weapon Model Override"
 #define PLUGIN_AUTHOR       "Zabaniya001"
 #define PLUGIN_DESCRIPTION  "Custom Attribute that utilizes Nosoop's framework. This plugin lets you have a custom weapon model ( both worldmodel and viewmodel )."
-#define PLUGIN_VERSION      "1.0.0"
+#define PLUGIN_VERSION      "1.1.0"
 #define PLUGIN_URL          "https://alliedmods.net"
 
 public Plugin myinfo = {
@@ -61,7 +61,7 @@ enum struct WeaponModels
 
     void ClearModel(int iClient)
     {
-        if(!this.m_bHasCustomModel) // We takin' home those performance optimizations.
+        if(!this.m_bHasCustomModel)
             return;
 
         if(this.m_iWorldModel > 0 && this.m_iWorldModel < 2048 && IsValidEntity(this.m_iWorldModel))
@@ -125,12 +125,51 @@ public void OnPluginStart()
     HookEvent("post_inventory_application", Event_InventoryApplicationPost);
     HookEvent("player_spawn", Event_PlayerSpawn);
     HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
+    HookEvent("player_sapped_object", Event_OnObjectSapped);
 
     // In case of late-load
     for(int client = 1; client <= MaxClients; client++)
     {
         if(IsClientInGame(client))
             OnClientPutInServer(client);
+    }
+
+    return;
+}
+
+public void OnPluginEnd()
+{
+    int iWeapon = 0;
+
+    for(int iClient = 1; iClient <= MaxClients; iClient++)
+    {
+        if(!IsClientInGame(iClient))
+            continue;
+
+        for(eTF2LoadoutSlot iSlot = TF2LoadoutSlot_Primary; iSlot < TF2LoadoutSlot_PDA2; iSlot++)
+        {
+            iWeapon = TF2_GetPlayerLoadoutSlot(iClient, iSlot);
+
+            if(iWeapon < 0 || iWeapon > 2048)
+                continue;
+
+            if(!IsValidEntity(iWeapon))
+                continue;
+
+            if(!g_hWeaponModels[iWeapon].HasModel())
+                continue;
+
+            // Cleaning them up in case you unload the plugin since the custom models 
+            // will stay and stack on top of the other weapons.
+            g_hWeaponModels[iWeapon].ClearModel(iClient);
+            g_hWeaponModels[iWeapon].Destroy();
+
+            // Making the original weapons re-appear. However, only the worldmodel will come back 
+            // and the viewmodel will stay invisible, unless you taunt. Weird, could force the client to taunt 
+            // or find some events to force the reload of the viewmodel but too bad!
+            SetEntityRenderMode(iWeapon, RENDER_NORMAL);
+            SetEntityRenderColor(iWeapon, 255, 255, 255, 255);
+        }
     }
 
     return;
@@ -189,6 +228,8 @@ public void OnWeaponSwitchPost(int iClient, int iWeapon)
     if(iLastWeapon[iClient] == iWeapon)
         return;
 
+    // CheckPlayerShield(iClient, iWeapon);
+
     g_hWeaponModels[iLastWeapon[iClient]].ClearModel(iClient);
 
     iLastWeapon[iClient] = iWeapon;
@@ -233,60 +274,22 @@ public void OnWeaponEquipPost(int iClient, int iWeapon)
 public void Event_InventoryApplicationPost(Event event, const char[] name, bool dontBroadcast)
 {
     int iClient                 =   GetClientOfUserId((event.GetInt("userid")));
-    int iWeaponInCurrentSlot    =   0;
-
-    for(eTF2LoadoutSlot iSlot = TF2LoadoutSlot_Primary; iSlot < TF2LoadoutSlot_PDA2; iSlot++)
-    {
-        iWeaponInCurrentSlot = TF2_GetPlayerLoadoutSlot(iClient, iSlot);
-
-        if(!IsValidEntity(iWeaponInCurrentSlot))
-            continue;
-
-        char sModelName[PLATFORM_MAX_PATH];
-        if(!TF2CustAttr_GetString(iWeaponInCurrentSlot, "weaponmodel override", sModelName, sizeof(sModelName)))
-            continue;
-
-        if(StrEqual(sModelName, ""))
-            continue;
-
-        int item_slot = TF2Econ_GetItemLoadoutSlot(iWeaponInCurrentSlot, TF2_GetPlayerClass(iClient));
-
-        // Removing all wearables that take up the same slot as this weapon.
-
-        int iEntity;
-        while((iEntity = FindEntityByClassname(iEntity, "tf_wearable*")) != -1)
-        {
-            if(iEntity == iWeaponInCurrentSlot)
-                continue;
-
-            if(GetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity") != iClient) 
-                continue;
-
-            int idx = GetEntProp(iEntity, Prop_Send, "m_iItemDefinitionIndex");
-            int iSlotTwo = TF2Econ_GetItemLoadoutSlot(idx, TF2_GetPlayerClass(iClient));
-
-            if (iSlotTwo == item_slot)
-            {
-                TF2_RemoveWearable(iClient, iEntity);
-                RemoveEntity(iEntity);
-            }
-        }
-
-        g_hWeaponModels[iWeaponInCurrentSlot].SetModel(sModelName);
-
-        // Secret <3
-    }
 
     int iActiveWeapon = TF2_GetActiveWeapon(iClient);
 
-    if(iActiveWeapon < 0 || iActiveWeapon > 2048)
+    if(iActiveWeapon <= 0 || iActiveWeapon > 2048)
         return;
 
-    DataPack hPack = new DataPack();
-    hPack.WriteCell(EntIndexToEntRef(iClient));
-    hPack.WriteCell(EntIndexToEntRef(iActiveWeapon));
+    if(!IsValidEntity(iActiveWeapon))
+        return;
 
-    RequestFrame(Frame_OnDrawWeapon, hPack);
+    char sModelName[PLATFORM_MAX_PATH];
+    if(!TF2CustAttr_GetString(iActiveWeapon, "weaponmodel override", sModelName, sizeof(sModelName)))
+        return;
+
+    g_hWeaponModels[iActiveWeapon].SetModel(sModelName);
+
+    OnDrawWeapon(iClient, iActiveWeapon);
 
     return;
 }
@@ -311,6 +314,35 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
     return Plugin_Continue;
 }
 
+// You know... I might be using too many unnecessary sanity checks. But I'd rather not get a random error so I'll just do that. 
+public void Event_OnObjectSapped(Event event, const char[] name, bool dontBroadcast)
+{
+    int iClient = GetClientOfUserId(event.GetInt("userid"));
+
+    if(iClient <= 0 || iClient > MaxClients)
+        return;
+
+    if(!IsClientInGame(iClient))
+        return;
+
+    int iSapper = GetPlayerWeaponSlot(iClient, TF2LoadoutSlot_Secondary);
+    if(!IsValidEntity(iSapper))
+        return;
+
+    char sModelName[PLATFORM_MAX_PATH];
+    if(!TF2CustAttr_GetString(iSapper, "weaponmodel override", sModelName, sizeof(sModelName)))
+        return;
+
+    int iAttachedSapper = event.GetInt("sapperid");
+
+    if(!IsValidEntity(iAttachedSapper))
+        return;
+
+    SetEntityModel(iAttachedSapper, sModelName);
+
+    return;
+}
+
 // Checking if the client is taunting so we can add / remove the weapon model so it doesn't look weird.
 
 public void TF2_OnConditionAdded(int iClient, TFCond cond)
@@ -322,14 +354,17 @@ public void TF2_OnConditionAdded(int iClient, TFCond cond)
 
     int iTaunt = GetEntProp(iClient, Prop_Send, "m_iTauntItemDefIndex");
     
-    if(iTaunt < 0) // Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
+    // Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
+    if(iTaunt < 0)
         return;
-
-    SetEntityRenderMode(iWeapon, RENDER_NORMAL);
-    SetEntityRenderColor(iWeapon, 255, 255, 255, 255);
 
     if(!g_hWeaponModels[iWeapon].HasModel())
         return;
+
+    // Fun fact: Taunt props are somehow bound to weapons. You gotta unhide them 
+    // or otherwise the taunt props will be invisible.
+    SetEntityRenderMode(iWeapon, RENDER_NORMAL);
+    SetEntityRenderColor(iWeapon, 255, 255, 255, 255);
 
     g_hWeaponModels[iWeapon].ClearModel(iClient);
 
@@ -352,6 +387,38 @@ public void TF2_OnConditionRemoved(int iClient, TFCond cond)
 // ||                               Functions                                  ||
 // ||──────────────────────────────────────────────────────────────────────────||
 
+/*
+// Okay so, it kinda applies the custom model. However, it hides the sword and the worldmodel stays ( on top of the custom one ).
+// There is definitely a way to do it but I'm lazy and a bit stupid so y'all will have to wait until God appears in front of me and blesses me with infinite knowledge.
+public void CheckPlayerShield(int iClient, int iWeapon)
+{
+    if(!(TF2_GetPlayerClass(iClient) == TFClass_DemoMan && GetPlayerWeaponSlot(iClient, TFWeaponSlot_Melee) == iWeapon))
+        return;
+
+    int iShield = TF2_GetPlayerLoadoutSlot(iClient, TF2LoadoutSlot_Secondary);
+
+    if(iShield <= 0 || iShield > 2048)
+        return;
+
+    if(!IsValidEntity(iShield))
+        return;
+
+    if(!TF2_IsWearable(iShield))
+        return;
+    
+    char sModelName[PLATFORM_MAX_PATH];
+    if(!TF2CustAttr_GetString(iShield, "weaponmodel override", sModelName, sizeof(sModelName)))
+        return;
+    
+    g_hWeaponModels[iWeapon].SetModel(sModelName);
+
+    g_hWeaponModels[iWeapon].m_iWorldModel  =   ApplyWeaponModel(iClient, g_hWeaponModels[iWeapon].m_sWeaponModel, false, iWeapon);
+    g_hWeaponModels[iWeapon].m_iViewModel   =   ApplyWeaponModel(iClient, g_hWeaponModels[iWeapon].m_sWeaponModel, true, iWeapon);
+
+    return;
+}
+*/
+
 public Action Timer_OnDrawWeapon(Handle timer, DataPack hPack)
 {
     Frame_OnDrawWeapon(hPack);
@@ -363,12 +430,15 @@ public void Frame_OnDrawWeapon(DataPack hPack)
 {
     hPack.Reset();
 
-    int client = EntRefToEntIndex(hPack.ReadCell());
-    int weapon = EntRefToEntIndex(hPack.ReadCell());
+    int iClient = EntRefToEntIndex(hPack.ReadCell());
+    int iWeapon = EntRefToEntIndex(hPack.ReadCell());
 
     delete hPack;
 
-    OnDrawWeapon(client, weapon);
+    if(iWeapon != TF2_GetActiveWeapon(iClient))
+        return;
+
+    OnDrawWeapon(iClient, iWeapon);
 
     return;
 }
@@ -389,9 +459,6 @@ public void OnDrawWeapon(int iClient, int iWeapon)
     if(!g_hWeaponModels[iWeapon].HasModel())
         return;
 
-    if(iWeapon != TF2_GetActiveWeapon(iClient))
-        return;
-
     SetEntityRenderMode(iWeapon, RENDER_TRANSALPHA);
     SetEntityRenderColor(iWeapon, 0, 0, 0, 0);
 
@@ -401,13 +468,14 @@ public void OnDrawWeapon(int iClient, int iWeapon)
     g_hWeaponModels[iWeapon].m_iViewModel   =   ApplyWeaponModel(iClient, g_hWeaponModels[iWeapon].m_sWeaponModel, true, iWeapon);
     
     /*
+    // Debugging purposes
     PrintToConsole(iClient, "======================================================================================");
     PrintToConsole(iClient, "sModel: %s", g_hWeaponModels[iWeapon].m_sWeaponModel);
     PrintToConsole(iClient, "g_hWeaponModels[iWeapon].m_iWorldModel: %i", g_hWeaponModels[iWeapon].m_iWorldModel);
     PrintToConsole(iClient, "g_hWeaponModels[iWeapon].m_iViewModel: %i", g_hWeaponModels[iWeapon].m_iViewModel);
     PrintToConsole(iClient, "======================================================================================");
     */
-
+    
     return;
 }
 
@@ -445,9 +513,9 @@ public int CreateWearable(int iClient, char[] sModel, bool bIsViewmodel, int iQu
     SetEntProp(iEntity, Prop_Send, "m_iEntityLevel", -1);
     SetEntProp(iEntity, Prop_Send, "m_iItemIDLow", 2048);
     SetEntProp(iEntity, Prop_Send, "m_iItemIDHigh", 0);
-    // Secret <3
     SetEntProp(iEntity, Prop_Send, "m_bInitialized", 1);
     SetEntProp(iEntity, Prop_Send, "m_iAccountID", GetSteamAccountID(iClient));
+    // <3
 
     SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", iClient);
 
