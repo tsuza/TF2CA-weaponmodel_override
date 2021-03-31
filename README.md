@@ -7,6 +7,16 @@ This plugin lets you set a custom weapon model to both worldmodel and viewmodel.
 
 Tested it on Nosoop's [Custom Weapon X](https://github.com/nosoop/SM-TFCustomWeaponsX) and it works without any problems.
 
+## How to apply the attribute
+
+`"weaponmodel override"					"model path"`
+
+Shove it inside tf_custom_attributes.txt if you want to replace a normal weapon's model ( or anything else that supports custom attributes ) or in the Custom Attribuets section inside a custom weapon's cfg if you use Custom Weapons X. 
+
+Example of a model path: `models/necgaming/weapons/kunai/australium/c_shogun_kunai.mdl`
+
+#
+
 **HOWEVER,** the model won't show on non-bot clients. There is a missing property to enable it, but it's your job to find it ( in case you find it and want to put it in the plugin, I wrote a comment where you should put it ). It's not allowed to share it publicly.
 
 This plugin uses Nosoop's [Ninja](https://github.com/nosoop/NinjaBuild-SMPlugin) template. Easy to organize everything and build releases. I'd recommend to check it out.
