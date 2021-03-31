@@ -1,6 +1,9 @@
 # Custom Weapon Models
 
-Custom Attribute using Nosoop's [custom attributes framework](https://github.com/nosoop/SM-TFCustAttr). This plugin lets you set a custom weapon model to both worldmodel and viewmodel. The weapon model persists on dropped weapons as well.
+Custom Attribute using Nosoop's [custom attributes framework](https://github.com/nosoop/SM-TFCustAttr). 
+This plugin lets you set a custom weapon model to both worldmodel and viewmodel. The weapon model persists on dropped weapons. Note that this particular plugin to change weapon models doesn't have any lighting issues unlike some others ( arms turning red 'n such ).
+
+**NOTE**: Shields aren't supported as of now. It's a bit weirder and I'm lazy. 
 
 Tested it on Nosoop's [Custom Weapon X](https://github.com/nosoop/SM-TFCustomWeaponsX) and it works without any problems.
 
