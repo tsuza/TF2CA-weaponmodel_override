@@ -228,11 +228,17 @@ public void OnWeaponSwitchPost(int iClient, int iWeapon)
     if(iLastWeapon[iClient] == iWeapon)
         return;
 
-    // CheckPlayerShield(iClient, iWeapon);
-
     g_hWeaponModels[iLastWeapon[iClient]].ClearModel(iClient);
 
     iLastWeapon[iClient] = iWeapon;
+
+    char sModelName[PLATFORM_MAX_PATH];
+    if(!TF2CustAttr_GetString(iWeapon, "weaponmodel override", sModelName, sizeof(sModelName)))
+        return;
+
+    g_hWeaponModels[iWeapon].SetModel(sModelName);
+
+    // CheckPlayerShield(iClient, iWeapon);
 
     float fHolsterTime = 0.0;
 
