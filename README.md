@@ -1,8 +1,21 @@
 # Custom Weapon Models
 
-Custom Attribute using Nosoop's [custom attributes framework](https://github.com/nosoop/SM-TFCustAttr). This plugin lets you set a custom weapon model to both worldmodel and viewmodel. The weapon model persists on dropped weapons as well.
+Custom Attribute using Nosoop's [custom attributes framework](https://github.com/nosoop/SM-TFCustAttr). 
+This plugin lets you set a custom weapon model to both worldmodel and viewmodel. The weapon model persists on dropped weapons. Note that this particular plugin to change weapon models doesn't have any lighting issues unlike some others ( arms turning red 'n such ).
+
+**NOTE**: Shields aren't supported as of now. It's a bit weirder and I'm lazy. 
 
 Tested it on Nosoop's [Custom Weapon X](https://github.com/nosoop/SM-TFCustomWeaponsX) and it works without any problems.
+
+## How to apply the attribute
+
+`"weaponmodel override"					"model path"`
+
+Shove it inside tf_custom_attributes.txt if you want to replace a normal weapon's model ( or anything else that supports custom attributes ) or in the Custom Attribuets section inside a custom weapon's cfg if you use Custom Weapons X. 
+
+Example of a model path: `models/necgaming/weapons/kunai/australium/c_shogun_kunai.mdl`
+
+#
 
 **HOWEVER,** the model won't show on non-bot clients. There is a missing property to enable it, but it's your job to find it ( in case you find it and want to put it in the plugin, I wrote a comment where you should put it ). It's not allowed to share it publicly.
 
