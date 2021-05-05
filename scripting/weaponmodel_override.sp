@@ -361,16 +361,13 @@ public void TF2_OnConditionAdded(int iClient, TFCond cond)
     int iTaunt = GetEntProp(iClient, Prop_Send, "m_iTauntItemDefIndex");
     
     // Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
-    if(iTaunt < 0)
+    if(iTaunt < 0 || !g_hWeaponModels[iWeapon].HasModel())
         return;
  
     if(iTaunt == 1117) {  // Battin' a Thousand taunt
         OnDrawWeapon(iClient, iWeapon);
         return;
     }
-
-    if(!g_hWeaponModels[iWeapon].HasModel())
-        return;
 
     // Fun fact: Taunt props are somehow bound to weapons. You gotta unhide them 
     // or otherwise the taunt props will be invisible.
