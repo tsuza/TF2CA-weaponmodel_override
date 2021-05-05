@@ -363,6 +363,11 @@ public void TF2_OnConditionAdded(int iClient, TFCond cond)
     // Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
     if(iTaunt < 0)
         return;
+ 
+    if(iTaunt == 1117) {  // Battin' a Thousand taunt
+        OnDrawWeapon(iClient, iWeapon);
+        return;
+    }
 
     if(!g_hWeaponModels[iWeapon].HasModel())
         return;
