@@ -7,16 +7,16 @@
 		{
 			"CTFPlayer::EquipWearable"
 			{
-				"windows"	"430"
-				"linux"		"431"
-				"mac"		"431"
+				"windows"	"431"
+				"linux"		"432"
+				"mac"		"432"
 			}
 
 			"CTFPlayer::RemoveWearable"
 			{
-				"windows"	"431"
-				"linux"		"432"
-				"mac"		"432"
+				"windows"	"432"
+				"linux"		"433"
+				"mac"		"433"
 			}
 		}
 	}
