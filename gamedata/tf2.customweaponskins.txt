@@ -7,9 +7,9 @@
 		{
 			"CTFPlayer::EquipWearable"
 			{
-				"windows"       "435"
+				"windows"       "434"
 				"linux"         "435"
-				"mac"           "434"
+				"mac"           "435"
 			}
 			"CTFPlayer::RemoveWearable"
 			{
