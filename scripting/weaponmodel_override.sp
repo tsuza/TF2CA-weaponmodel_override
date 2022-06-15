@@ -2,7 +2,7 @@
 
 #include <tf2>
 #include <tf2_stocks>
-#include <tf2wearables>
+#include <tf2utils>
 #include <tf_econ_data>
 #include <tf_custom_attributes>
 
@@ -102,26 +102,12 @@ enum struct WeaponModels
 
 WeaponModels g_hWeaponModels[MAX_ENTITY_LIMIT + 1];
 
-Handle g_hSdkEquipWearable;
-
 // ||──────────────────────────────────────────────────────────────────────────||
 // ||                               SOURCEMOD API                              ||
 // ||──────────────────────────────────────────────────────────────────────────||
 
 public void OnPluginStart()
 {
-    GameData config = new GameData("tf2.customweaponskins");
-
-    if(!config)
-        SetFailState("Failed to get gamedata: tf2.customweaponskins");
-
-    StartPrepSDKCall(SDKCall_Player);
-    PrepSDKCall_SetFromConf(config, SDKConf_Virtual, "CTFPlayer::EquipWearable");
-    PrepSDKCall_AddParameter(SDKType_CBaseEntity, SDKPass_Pointer);
-    g_hSdkEquipWearable = EndPrepSDKCall();
-
-    delete config;
-
     HookEvent("post_inventory_application", Event_InventoryApplicationPost);
     HookEvent("player_spawn", Event_PlayerSpawn);
     HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
@@ -146,9 +132,9 @@ public void OnPluginEnd()
         if(!IsClientInGame(iClient))
             continue;
 
-        for(eTF2LoadoutSlot iSlot = TF2LoadoutSlot_Primary; iSlot < TF2LoadoutSlot_PDA2; iSlot++)
+        for(int iSlot = 0; iSlot < 9; iSlot++)
         {
-            iWeapon = TF2_GetPlayerLoadoutSlot(iClient, iSlot);
+            iWeapon = TF2Util_GetPlayerLoadoutEntity(iClient, iSlot);
 
             if(iWeapon < 0 || iWeapon > 2048)
                 continue;
@@ -279,7 +265,7 @@ public void OnWeaponEquipPost(int iClient, int iWeapon)
 
 public void Event_InventoryApplicationPost(Event event, const char[] name, bool dontBroadcast)
 {
-    int iClient                 =   GetClientOfUserId((event.GetInt("userid")));
+    int iClient = GetClientOfUserId((event.GetInt("userid")));
 
     int iActiveWeapon = TF2_GetActiveWeapon(iClient);
 
@@ -312,12 +298,15 @@ public void Event_PlayerSpawn(Event event, const char[] name, bool dontBroadcast
 
 public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast)
 {
-    int iClient = GetClientOfUserId(event.GetInt("userid"));
-    int iWeapon = TF2_GetActiveWeapon(iClient);
+	if(event.GetInt("death_flags") & TF_DEATHFLAG_DEADRINGER)
+		return Plugin_Continue;
 
-    g_hWeaponModels[iWeapon].ClearModel(iClient);
+	int iClient = GetClientOfUserId(event.GetInt("userid"));
+	int iWeapon = TF2_GetActiveWeapon(iClient);
 
-    return Plugin_Continue;
+	g_hWeaponModels[iWeapon].ClearModel(iClient);
+
+	return Plugin_Continue;
 }
 
 // You know... I might be using too many unnecessary sanity checks. But I'd rather not get a random error so I'll just do that. 
@@ -331,7 +320,7 @@ public void Event_OnObjectSapped(Event event, const char[] name, bool dontBroadc
     if(!IsClientInGame(iClient))
         return;
 
-    int iSapper = GetPlayerWeaponSlot(iClient, TF2LoadoutSlot_Secondary);
+    int iSapper = GetPlayerWeaponSlot(iClient, 1);
     if(!IsValidEntity(iSapper))
         return;
 
@@ -523,7 +512,7 @@ public int CreateWearable(int iClient, char[] sModel, bool bIsViewmodel, int iQu
     SetEntProp(iEntity, Prop_Send, "m_iItemIDHigh", 0);
     SetEntProp(iEntity, Prop_Send, "m_bInitialized", 1);
     SetEntProp(iEntity, Prop_Send, "m_iAccountID", GetSteamAccountID(iClient));
-    // <3
+    SetEntProp(iEntity, Prop_Send, "m_bValidatedAttachedEntity", 1);
 
     SetEntPropEnt(iEntity, Prop_Send, "m_hOwnerEntity", iClient);
 
@@ -531,7 +520,7 @@ public int CreateWearable(int iClient, char[] sModel, bool bIsViewmodel, int iQu
     SetVariantString("!activator");
     ActivateEntity(iEntity);
 
-    TF2_EquipWearable(iClient, iEntity);
+    TF2Util_EquipPlayerWearable(iClient, iEntity);
 
     return iEntity;
 }
@@ -543,18 +532,4 @@ public int CreateWearable(int iClient, char[] sModel, bool bIsViewmodel, int iQu
 stock int TF2_GetActiveWeapon(int iClient)
 {
     return GetEntPropEnt(iClient, Prop_Send, "m_hActiveWeapon");
-}
-
-stock void TF2_EquipWearable(int iClient, int iEntity)
-{
-    if(!g_hSdkEquipWearable)
-    {
-        LogMessage("Error: Can't call EquipWearable, SDK functions not loaded!");
-
-        return;
-    }
-
-    SDKCall(g_hSdkEquipWearable, iClient, iEntity);
-
-    return;
 }
