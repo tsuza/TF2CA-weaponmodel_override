@@ -46,7 +46,7 @@
 ### How to apply
 You can apply these attributes via config with whatever plugin you're using ( if there is enough demand I can create one ).
 
-Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute][Nosoop's TF2 Attribute fork]'s [TF2Attrib_SetFromStringValue](https://github.com/nosoop/tf2attributes/blob/af679918a88464cc23ad86ad737db837c89473bc/scripting/include/tf2attributes.inc#LL45C13-L45C41) or any other native to set it. You can also retrieve the value with the given API. 
+Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute](https://github.com/FlaminSarge/tf2attributes)'s [TF2Attrib_SetFromStringValue](https://github.com/nosoop/tf2attributes/blob/af679918a88464cc23ad86ad737db837c89473bc/scripting/include/tf2attributes.inc#LL45C13-L45C41) or any other native to set it. You can also retrieve the value with the given API. 
 
 **Example:** 
 1. `"set weapon model" "models/weapons/custommodels/wolverine/c_machete.mdl"` <-- It sets the weapon model to this
