@@ -27,7 +27,13 @@
 
 ![229254968-78f51103-9edd-46b9-8ccf-3e724dd5fb18 (1)](https://user-images.githubusercontent.com/73082112/232944588-90748b14-f8d5-4d0e-9f1a-09ad4a1c6cce.png)
 
-*( I didn't make the Sentry Gun pistol model. Credits goes to the [original creator](https://gamebanana.com/skins/139638) for it. )*
+
+
+https://user-images.githubusercontent.com/73082112/233108481-6b5d4986-651b-40d5-bd06-1ab812869415.mp4
+
+
+
+*I didn't make any of these models you're seeing. Credits go to: [the sentry pistol original creator](https://gamebanana.com/skins/139638), the [wolverine claws original creator](https://gamebanana.com/mods/323579) and [VSH Rewrite for the merasmus wand and arms models](https://github.com/redsunservers/VSH-Rewrite)*
 
 ## Information
 
@@ -40,8 +46,6 @@
 | `set weapon worldmodel`         | `set_weapon_worldmodel`     | It changes both the worldmodel of the weapon to the specified model. It overrides `set weapon model`.                                                 |
 | `set viewmodel arms`            | `set_viewmodel_arms`        | It changes the arms model ( including arms ) to the specified model.                                                                                  |
 | `set viewmodel bonemerged arms` | `set_viewmodel_animations`  | It changes the visible arms to the specified model. Useful if you want to set animations with `set viewmodel arms` but want to use a different model. |
-
----
 
 ### How to apply
 You can apply these attributes via config with whatever plugin you're using ( if there is enough demand I can create one ).
@@ -61,7 +65,7 @@ Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute](h
 
 - [Nosoop's Econ Dynamic](https://github.com/nosoop/SMExt-TFEconDynamic) ( It injects custom attributes to act like real ones )
 - [TF2 Utils](https://github.com/nosoop/SM-TFUtils)
-- [TF2 Attribute ( up-to-date )](https://github.com/FlaminSarge/tf2attributes)
+- [TF2 Attribute ( >1.7.2 )](https://github.com/FlaminSarge/tf2attributes)
 
 
 ### Supported
