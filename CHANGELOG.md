@@ -1,5 +1,11 @@
 ## Release Notes
 
+## [2.0.1]
+
+### Added
+
+Added better support when reloading or unloading the plugin ( it now removes the models ).
+
 ## [2.0.0]
 Big change, thus big versioning change.
 We've moved away from [Nosoop's custom attribute frameowrk](https://github.com/nosoop/SM-TFCustAttr) and we've switched over to [Nosoop's SMExt-TFEconDynamic](SMExt-TFEconDynamic), which utilizes a injection method to act just like actual TF2 attributes ( hence you can use TF2Attribute's functions to parse them ).

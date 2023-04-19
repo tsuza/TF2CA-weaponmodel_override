@@ -19,7 +19,7 @@ public Plugin myinfo =
 	name        =  "[TF2] Attribute: Viewmodel Override",
 	author      =  "Zabaniya001",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.0",
+	version     =  "2.0.1",
 	url         =  "https://github.com/Zabaniya001/TF2CA-weaponmodel_override"
 };
 
@@ -87,6 +87,36 @@ public void OnPluginStart()
 	return;
 }
 
+public void OnPluginEnd()
+{
+	for(int client = 1; client <= MaxClients; client++)
+	{
+		if(!IsClientInGame(client))
+			continue;
+		
+		int active_weapon = TF2_GetActiveWeapon(client);
+		
+		if(IsValidEntity(active_weapon) && EntRefToEntIndex(g_ClientWeaponModels[client].m_iViewModelRef) != -1)
+		{
+			SetEntProp(active_weapon, Prop_Send, "m_bBeingRepurposedForTaunt", 0);
+
+			SetEntityRenderMode(active_weapon, RENDER_NORMAL);
+			SetEntityRenderColor(active_weapon, 255, 255, 255, 255);
+		}
+
+		if(EntRefToEntIndex(g_ClientWeaponModels[client].m_iArmsRef) != -1)
+		{
+			int viewmodel = GetEntPropEnt(client, Prop_Send, "m_hViewModel");
+
+			SetEntProp(viewmodel, Prop_Send, "m_fEffects", GetEntProp(viewmodel, Prop_Send, "m_fEffects") & ~EF_NODRAW);
+		}
+		
+		g_ClientWeaponModels[client].Delete(client);
+	}
+
+	return;
+}
+
 void RegisterAttributes()
 {
 	TF2EconDynAttribute attribute = new TF2EconDynAttribute();
@@ -136,6 +166,7 @@ public void OnClientPutInServer(int client)
 	return;
 }
 
+/// TO-DO: This could be replaced with TF2Util_SetWearableAlwaysValid().
 public void Event_OnInventoryApplicationPost(Event event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId((event.GetInt("userid")));
