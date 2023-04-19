@@ -55,7 +55,7 @@ Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute](h
 **Example:** 
 1. `"set weapon model" "models/weapons/custommodels/wolverine/c_machete.mdl"` <-- It sets the weapon model to this
 2. `"set viewmodel arms" "models/weapons/custommodels/wolverine/c_sniper_arms.mdl"` <--- It sets the arms ( including animations ) to this
-3. `"set viewmodel bonemerged arms" "models/weapons/c_models/c_pyro_arms.mdl"`<-- It sets the visible arms model to this but it keeps the animations of `set viewmodel arms`
+3. `"set viewmodel bonemerged arms" "models/weapons/c_models/c_pyro_arms.mdl"`<-- It sets the visible arms model to this but it keeps the animations of `set viewmodel arms` ( or the original arms model if it's absent )
 
 
 ### Not supported ( for now )
