@@ -49,9 +49,9 @@ You can apply these attributes via config with whatever plugin you're using ( if
 Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute][Nosoop's TF2 Attribute fork]'s [TF2Attrib_SetFromStringValue](https://github.com/nosoop/tf2attributes/blob/af679918a88464cc23ad86ad737db837c89473bc/scripting/include/tf2attributes.inc#LL45C13-L45C41) or any other native to set it. You can also retrieve the value with the given API. 
 
 **Example:** 
-`"set weapon model" "models/weapons/custommodels/wolverine/c_machete.mdl"` <-- It sets the weapon model to this
-`"set viewmodel arms" "models/weapons/custommodels/wolverine/c_sniper_arms.mdl"` <--- It sets the arms ( including animations ) to this
-`"set viewmodel bonemerged arms" "models/weapons/c_models/c_pyro_arms.mdl"`<-- It sets the visible arms model to this but it keeps the animations of `set viewmodel arms`
+1. `"set weapon model" "models/weapons/custommodels/wolverine/c_machete.mdl"` <-- It sets the weapon model to this
+2. `"set viewmodel arms" "models/weapons/custommodels/wolverine/c_sniper_arms.mdl"` <--- It sets the arms ( including animations ) to this
+3. `"set viewmodel bonemerged arms" "models/weapons/c_models/c_pyro_arms.mdl"`<-- It sets the visible arms model to this but it keeps the animations of `set viewmodel arms`
 
 
 ### Not supported ( for now )
