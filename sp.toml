@@ -1,0 +1,11 @@
+[[dependency]]
+url = "https://github.com/nosoop/SMExt-TFEconDynamic/blob/main/scripting/include/tf_econ_dynamic.inc"
+path = "."
+
+[[dependency]]
+url = "https://github.com/nosoop/SM-TFUtils/blob/master/scripting/include/tf2utils.inc"
+path = "."
+
+[[dependency]]
+url = "https://github.com/FlaminSarge/tf2attributes/blob/master/scripting/include/tf2attributes.inc"
+path = "."
