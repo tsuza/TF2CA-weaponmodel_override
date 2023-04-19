@@ -61,8 +61,8 @@ Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute](h
 ### Known Issues
  - You can't change the demoshield model.
  - Mediguns and flamethrowers don't work properly.
-  - **Mediguns:** The beam won't appear ( that's because it's client-side ). [ This can get fixed by making a beam ourselves and parenting it ]
-  - **Flamethrowers:** The hands won't appear. [ This can get fixed by spawning the arms ourselves ]
+    - **Mediguns:** The beam won't appear ( that's because it's client-side ). [ This can get fixed by making a beam ourselves and parenting it ]
+    - **Flamethrowers:** The hands won't appear. [ This can get fixed by spawning the arms ourselves ]
 
 ## Requirements
 
