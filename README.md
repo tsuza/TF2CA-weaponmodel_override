@@ -33,13 +33,13 @@
 
 ### Attributes explanation
 
-| Name                       | Class                       | Description                                                                                             |
-| -------------------------- |-----------------------------| --------------------------------------------------------------------------------------------------------|
-| `set weapon model`         | `set_weapon_model`          | It changes both the viewmodel and worldmodel of the weapon to the path you specify.                     |
-| `set weapon viewmodel`     | `set_weapon_viewmodel`      | It changes the viewmodel of the weapon to the path you specify. It overrides `set weapon model`.        |
-| `set weapon worldmodel`    | `set_weapon_worldmodel`     | It changes both the worldmodel of the weapon to the path you specify. It overrides `set weapon model`.  |
-| `set viewmodel arms`       | `set_viewmodel_arms`        | It changes the arms model to the path you specify.                                                      |
-| `set viewmodel animations` | `set_viewmodel_animations`  | It changes the animations that the arms use to the path you specify.                                    |
+| Name                            | Class                       | Description                                                                                                                                           |
+| ------------------------------- |-----------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `set weapon model`              | `set_weapon_model`          | It changes both the viewmodel and worldmodel of the weapon to the specified model.                                                                    |
+| `set weapon viewmodel`          | `set_weapon_viewmodel`      | It changes the viewmodel of the weapon to the specified model. It overrides `set weapon model`.                                                       |
+| `set weapon worldmodel`         | `set_weapon_worldmodel`     | It changes both the worldmodel of the weapon to the specified model. It overrides `set weapon model`.                                                 |
+| `set viewmodel arms`            | `set_viewmodel_arms`        | It changes the arms model ( including arms ) to the specified model.                                                                                  |
+| `set viewmodel bonemerged arms` | `set_viewmodel_animations`  | It changes the visible arms to the specified model. Useful if you want to set animations with `set viewmodel arms` but want to use a different model. |
 
 ---
 
@@ -48,29 +48,22 @@ You can apply these attributes via config with whatever plugin you're using ( if
 
 Since this attribute acts like a TF2 attribute, you can utilize [TF2Attribute][Nosoop's TF2 Attribute fork]'s [TF2Attrib_SetFromStringValue](https://github.com/nosoop/tf2attributes/blob/af679918a88464cc23ad86ad737db837c89473bc/scripting/include/tf2attributes.inc#LL45C13-L45C41) or any other native to set it. You can also retrieve the value with the given API. 
 
-**Example:** `"set weapon model" "models/necgaming/weapons/kunai/australium/c_shogun_kunai.mdl"`
+**Example:** 
+`"set weapon model" "models/weapons/custommodels/wolverine/c_machete.mdl"` <-- It sets the weapon model to this
+`"set viewmodel arms" "models/weapons/custommodels/wolverine/c_sniper_arms.mdl"` <--- It sets the arms ( including animations ) to this
+`"set viewmodel bonemerged arms" "models/weapons/c_models/c_pyro_arms.mdl"`<-- It sets the visible arms model to this but it keeps the animations of `set viewmodel arms`
 
----
 
 ### Not supported ( for now )
-
  - Shields don't work properly.
 
-## Installation
+## Requirements
 
-### Requirements
-
-- [Nosoop's Econ Dynamic] ( It injects custom attributes to act like real ones )
-- [TF2 Utils]
-- [Nosoop's TF2 Attribute fork]
+- [Nosoop's Econ Dynamic](https://github.com/nosoop/SMExt-TFEconDynamic) ( It injects custom attributes to act like real ones )
+- [TF2 Utils](https://github.com/nosoop/SM-TFUtils)
+- [TF2 Attribute ( up-to-date )](https://github.com/FlaminSarge/tf2attributes)
 
 
 ### Supported
 
-- [CWX / Custom Weapons X]
-
-
-[Nosoop's Econ Dynamic]: [https://github.com/nosoop/SMExt-TFEconDynamic]
-[TF2 Utils]: [https://github.com/nosoop/SM-TFUtils]
-[Nosoop's TF2 Attribute fork]: [https://github.com/nosoop/tf2attributes]
-[CWX / Custom Weapons X]: [https://github.com/nosoop/SM-TFCustomWeaponsX]
+- [CWX / Custom Weapons X](https://github.com/nosoop/SM-TFCustomWeaponsX)
