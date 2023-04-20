@@ -262,8 +262,6 @@ public void TF2_OnConditionAdded(int client, TFCond cond)
 		return;
 
 	int taunt = GetEntProp(client, Prop_Send, "m_iTauntItemDefIndex");
-
-	PrintToChatAll("Taunt index: %i", taunt);
 	
 	// Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
 	if(taunt <= 0)
