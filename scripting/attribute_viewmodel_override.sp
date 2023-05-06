@@ -19,7 +19,7 @@ public Plugin myinfo =
 	name        =  "[TF2] Attribute: Viewmodel Override",
 	author      =  "Zabaniya001",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.1",
+	version     =  "2.0.2",
 	url         =  "https://github.com/Zabaniya001/TF2CA-weaponmodel_override"
 };
 
@@ -337,6 +337,9 @@ void Frame_OnDrawWeapon(DataPack hPack)
 
 	delete hPack;
 
+	if(client == -1 || weapon == -1)
+		return;
+
 	if(weapon != TF2_GetActiveWeapon(client))
 		return;
 
@@ -366,7 +369,7 @@ void OnDrawWeapon(int client, int weapon)
 	{
 		SetWeaponWorldmodel(client, weapon, model);
 	}
-	
+
 	if(TF2Attrib_HookValueString("", "set_viewmodel_bonemerged_arms", weapon, model, sizeof(model)))
 	{
 		SetViewmodelArms(client, weapon, model);
