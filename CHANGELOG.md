@@ -1,5 +1,11 @@
 ## Release Notes
 
+## [2.0.2]
+
+### Changes
+
+- Check if the client or weapon are invalid during Frame_OnDrawWeapon.
+
 ## [2.0.1]
 
 ### Added
