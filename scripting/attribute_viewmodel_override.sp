@@ -19,7 +19,7 @@ public Plugin myinfo =
 	name        =  "[TF2] Attribute: Viewmodel Override",
 	author      =  "Zabaniya001",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.2",
+	version     =  "2.0.3",
 	url         =  "https://github.com/Zabaniya001/TF2CA-weaponmodel_override"
 };
 
@@ -273,8 +273,11 @@ public void TF2_OnConditionAdded(int client, TFCond cond)
 	
 	int weapon = TF2_GetActiveWeapon(client);
 
-	SetEntityRenderMode(weapon, RENDER_NORMAL);
-	SetEntityRenderColor(weapon, 255, 255, 255, 255);
+	if(weapon > MaxClients && IsValidEntity(weapon))
+	{
+		SetEntityRenderMode(weapon, RENDER_NORMAL);
+		SetEntityRenderColor(weapon, 255, 255, 255, 255);
+	}
 
 	g_ClientWeaponModels[client].Delete(client);
 
@@ -285,8 +288,14 @@ public void TF2_OnConditionRemoved(int client, TFCond cond)
 {
 	if(cond != TFCond_Taunting)
 		return;
+	
+	if(!IsClientInGame(client))
+		return;
 
 	int weapon = TF2_GetActiveWeapon(client);
+
+	if(weapon <= 0 || !IsValidEntity(weapon))
+		return;
 
 	OnDrawWeapon(client, weapon);
 

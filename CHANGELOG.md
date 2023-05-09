@@ -1,5 +1,11 @@
 ## Release Notes
 
+## [2.0.3]
+
+### Fixes
+
+- Check if the weapon exists during `TF2_OnConditionAdded` and `TF2_OnConditionRemoved`
+
 ## [2.0.2]
 
 ### Changes
