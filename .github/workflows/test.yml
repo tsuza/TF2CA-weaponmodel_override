@@ -17,7 +17,7 @@ jobs:
         run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
       
       - name: Download SourcePawn plugin dependencies
-        uses: Zabaniya001/SPDependy@v1
+        uses: Zabaniya001/SPDependy@v2
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
 

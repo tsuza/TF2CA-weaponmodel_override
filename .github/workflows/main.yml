@@ -26,7 +26,7 @@ jobs:
           version-file: ./scripting/attribute_viewmodel_override.sp
         
       - name: Download SourcePawn plugin dependencies
-        uses: Zabaniya001/SPDependy@v1
+        uses: Zabaniya001/SPDependy@v2
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
 
