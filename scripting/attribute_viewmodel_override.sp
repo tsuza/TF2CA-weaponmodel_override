@@ -57,7 +57,7 @@ enum struct WeaponModel
 	}
 }
 
-WeaponModel g_ClientWeaponModels[36];
+WeaponModel g_ClientWeaponModels[MAXPLAYERS + 1];
 
 enum
 {
