@@ -17,10 +17,10 @@
 public Plugin myinfo =
 {
 	name        =  "[TF2] Attribute: Viewmodel Override",
-	author      =  "Zabaniya001",
+	author      =  "tsuza",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
 	version     =  "2.0.4",
-	url         =  "https://github.com/Zabaniya001/TF2CA-weaponmodel_override"
+	url         =  "https://github.com/tsuza/TF2CA-weaponmodel_override"
 };
 
 enum struct WeaponModel
