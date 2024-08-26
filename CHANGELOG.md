@@ -1,5 +1,9 @@
 ## Release Notes
 
+## [2.0.4]
+
+- Fix a typo in the worldmodel path.
+
 ## [2.0.3]
 
 ### Fixes

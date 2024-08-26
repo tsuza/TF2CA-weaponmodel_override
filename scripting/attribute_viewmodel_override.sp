@@ -17,10 +17,10 @@
 public Plugin myinfo =
 {
 	name        =  "[TF2] Attribute: Viewmodel Override",
-	author      =  "Zabaniya001",
+	author      =  "tsuza",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.3",
-	url         =  "https://github.com/Zabaniya001/TF2CA-weaponmodel_override"
+	version     =  "2.0.4",
+	url         =  "https://github.com/tsuza/TF2CA-weaponmodel_override"
 };
 
 enum struct WeaponModel
@@ -80,7 +80,7 @@ public void OnPluginStart()
 	{
 		if(!IsClientInGame(client))
 			continue;
-		
+
 		OnClientPutInServer(client);
 	}
 
@@ -93,9 +93,9 @@ public void OnPluginEnd()
 	{
 		if(!IsClientInGame(client))
 			continue;
-		
+
 		int active_weapon = TF2_GetActiveWeapon(client);
-		
+
 		if(IsValidEntity(active_weapon) && EntRefToEntIndex(g_ClientWeaponModels[client].m_iViewModelRef) != -1)
 		{
 			SetEntProp(active_weapon, Prop_Send, "m_bBeingRepurposedForTaunt", 0);
@@ -110,7 +110,7 @@ public void OnPluginEnd()
 
 			SetEntProp(viewmodel, Prop_Send, "m_fEffects", GetEntProp(viewmodel, Prop_Send, "m_fEffects") & ~EF_NODRAW);
 		}
-		
+
 		g_ClientWeaponModels[client].Delete(client);
 	}
 
@@ -203,7 +203,7 @@ void SDKHook_OnEntitySpawn(int entity)
 			|| Util_GetAttributeStringValueFromNonWeapons(entity, "set weapon worldmodel", model, sizeof(model)))
 	{
 		PrecacheModel(model);
-		
+
 		SetEntityModel(entity, model);
 	}
 
@@ -230,7 +230,7 @@ void Event_OnObjectSapped(Event event, const char[] name, bool bDontBroadcast)
 
 	if(!IsValidEntity(client))
 		return;
-	
+
 	int sapper = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
 
 	if(!IsValidEntity(sapper))
@@ -240,10 +240,10 @@ void Event_OnObjectSapped(Event event, const char[] name, bool bDontBroadcast)
 
 	if(!IsValidEntity(attached_sapper))
 		return;
-	
+
 	char model[PLATFORM_MAX_PATH];
 
-	if(!TF2Attrib_HookValueString("", "set_weapon_model", sapper, model, sizeof(model)) 
+	if(!TF2Attrib_HookValueString("", "set_weapon_model", sapper, model, sizeof(model))
 			&& !TF2Attrib_HookValueString("", "set_weapon_worldmodel", sapper, model, sizeof(model)))
 		return;
 
@@ -262,15 +262,15 @@ public void TF2_OnConditionAdded(int client, TFCond cond)
 		return;
 
 	int taunt = GetEntProp(client, Prop_Send, "m_iTauntItemDefIndex");
-	
+
 	// Default taunt. We're keeping the model in case it uses the weapon ( ex: sniper's sniperrifle default taunt )
 	if(taunt <= 0)
 		return;
-	
+
 	// Battin' a Thousand taunt
 	if(taunt == 1117)
 		return;
-	
+
 	int weapon = TF2_GetActiveWeapon(client);
 
 	if(weapon > MaxClients && IsValidEntity(weapon))
@@ -288,7 +288,7 @@ public void TF2_OnConditionRemoved(int client, TFCond cond)
 {
 	if(cond != TFCond_Taunting)
 		return;
-	
+
 	if(!IsClientInGame(client))
 		return;
 
@@ -327,11 +327,11 @@ void SDHook_OnWeaponSwitchPost(int client, int weapon)
 		return;
 
 	last_weapon_list[client] = EntIndexToEntRef(weapon);
-	
+
 	DataPack hPack = new DataPack();
 	hPack.WriteCell(EntIndexToEntRef(client));
 	hPack.WriteCell(EntIndexToEntRef(weapon));
-	
+
 	RequestFrame(Frame_OnDrawWeapon, hPack);
 
 	return;
@@ -373,7 +373,7 @@ void OnDrawWeapon(int client, int weapon)
 	{
 		SetWeaponViewmodel(client, weapon, model);
 	}
-	
+
 	if(TF2Attrib_HookValueString("", "set_weapon_worldmodel", weapon, model, sizeof(model)))
 	{
 		SetWeaponWorldmodel(client, weapon, model);
@@ -395,7 +395,7 @@ stock void SetWeaponViewmodel(int client, int weapon, char[] model_path = "", in
 	// This hides the weapon and makes the arms appear.
 	// Either we do this or we manually create the arms and attach them to the weapon ( + 1 entity ).
 	SetEntProp(weapon, Prop_Send, "m_bBeingRepurposedForTaunt", 1);
-	
+
 	g_ClientWeaponModels[client].m_iViewModelRef = EntIndexToEntRef(ApplyModel(client, model_path, model_id, true, weapon));
 
 	return;
@@ -405,7 +405,7 @@ stock void SetWeaponWorldmodel(int client, int weapon, char[] model_path = "", i
 {
 	g_ClientWeaponModels[client].m_iWorldModelRef = EntIndexToEntRef(ApplyModel(client, model_path, model_id,  false, weapon));
 
-	SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", model_path ? PrecacheModel("model_path") : model_id);
+	SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", model_path ? PrecacheModel(model_path) : model_id);
 
 	return;
 }
@@ -438,7 +438,7 @@ stock static int ApplyModel(int client, char[] model_path = "", int model_id = 0
 
 	//if(entity != -1 && weapon != -1 && !isViewmodel)
 	//	AcceptEntityInput(entity, "SetParent", weapon);
-		
+
 	//SetEntPropEnt(entity, Prop_Send, "m_hWeaponAssociatedWith", weapon);
 
 	return entity;
