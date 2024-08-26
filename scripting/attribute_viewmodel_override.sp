@@ -405,7 +405,7 @@ stock void SetWeaponWorldmodel(int client, int weapon, char[] model_path = "", i
 {
 	g_ClientWeaponModels[client].m_iWorldModelRef = EntIndexToEntRef(ApplyModel(client, model_path, model_id,  false, weapon));
 
-	SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", model_path ? PrecacheModel("model_path") : model_id);
+	SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", model_path ? PrecacheModel(model_path) : model_id);
 
 	return;
 }
