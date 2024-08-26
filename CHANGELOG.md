@@ -1,5 +1,10 @@
 ## Release Notes
 
+## [2.0.5]
+
+### Added
+- Added support for unrestricted maxplayers count.
+
 ## [2.0.4]
 
 - Fix a typo in the worldmodel path.
