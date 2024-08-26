@@ -15,11 +15,11 @@ jobs:
 
       - name: Set environment variables
         run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
-      
+
       - name: Download SourcePawn plugin dependencies
-        uses: Zabaniya001/SPDependy@v2
+        uses: tsuza/SPDependy@v2
         with:
-          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Setup SourcePawn Compiler ${{ matrix.SM_VERSION }}
         id: setup_sp
