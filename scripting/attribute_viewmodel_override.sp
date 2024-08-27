@@ -19,7 +19,7 @@ public Plugin myinfo =
 	name        =  "[TF2] Attribute: Viewmodel Override",
 	author      =  "tsuza",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.5",
+	version     =  "2.0.6",
 	url         =  "https://github.com/tsuza/TF2CA-weaponmodel_override"
 };
 
@@ -316,7 +316,7 @@ void SDHook_OnWeaponEquipPost(int client, int weapon)
 
 void SDHook_OnWeaponSwitchPost(int client, int weapon)
 {
-	static int last_weapon_list[36] = {-1, ...};
+	static int last_weapon_list[MAXPLAYERS + 1] = {-1, ...};
 
 	if(!IsValidEntity(weapon))
 		return;
