@@ -316,7 +316,7 @@ void SDHook_OnWeaponEquipPost(int client, int weapon)
 
 void SDHook_OnWeaponSwitchPost(int client, int weapon)
 {
-	static int last_weapon_list[36] = {-1, ...};
+	static int last_weapon_list[MAXPLAYERS + 1] = {-1, ...};
 
 	if(!IsValidEntity(weapon))
 		return;
