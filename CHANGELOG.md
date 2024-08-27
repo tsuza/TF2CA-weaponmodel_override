@@ -1,4 +1,9 @@
-## Release Notes
+# Release Notes
+
+## [2.0.6]
+
+### Fixes
+- Fix an array not using MAXPLAYERS ( important for unrestricted maxplayers count )
 
 ## [2.0.5]
 
