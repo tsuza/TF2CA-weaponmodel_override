@@ -19,7 +19,7 @@ public Plugin myinfo =
 	name        =  "[TF2] Attribute: Viewmodel Override",
 	author      =  "tsuza",
 	description =  "[TF2] Attributes to modify arms, arms animations, firstperson and thirdparson weapon model.",
-	version     =  "2.0.6",
+	version     =  "2.0.7",
 	url         =  "https://github.com/tsuza/TF2CA-weaponmodel_override"
 };
 
@@ -120,6 +120,9 @@ public void OnPluginEnd()
 void RegisterAttributes()
 {
 	TF2EconDynAttribute attribute = new TF2EconDynAttribute();
+
+	if(!attribute)
+		SetFailState("The TF2EconDynAttribute handle is invalid. Make sure that the extension's gamedata is up-to-date. Aborting...");
 
 	attribute.SetDescriptionFormat("value_is_additive");
 	attribute.SetCustom("attribute_type", "string");
