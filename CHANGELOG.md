@@ -1,5 +1,10 @@
 # Release Notes
 
+## [2.0.7]
+
+### Fixes
+- Add an additional sanity check in case the TF2EconDynAttribute handle is not valid.
+
 ## [2.0.6]
 
 ### Fixes
